@@ -1,5 +1,8 @@
 import { storyblokInit, apiPlugin } from "@storyblok/react/rsc";
+
 import StoryblokProvider from "@/components/context/StoryblokProvider";
+import Navbar from "@/components/common/Navbar";
+
 import { StoryBlokComponents } from "@/utils/StoryBlokComponents";
 import "./globals.css";
 
@@ -22,6 +25,7 @@ export default function RootLayout({ children }) {
     <StoryblokProvider>
       <html lang="en">
         <body>
+          <Navbar />
           {children}
         </body>
       </html>
