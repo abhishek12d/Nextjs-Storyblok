@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { IoIosArrowDown } from "react-icons/io";
+import { IoSearch, IoCartOutline } from "react-icons/io5";
 
 import storyblokApi from '@/model/storyBlokApi';
 import WithStoryblok from '@/components/helpers/withStoryblok';
@@ -72,10 +73,20 @@ const Navbar = () => {
           </div>
         ))}
       </div>
-      <div className='flex ml-auto gap-6'>
+      <div className='flex ml-auto gap-10'>
         {data?.actionItems?.map((item, index) => {
           return (
-            <p key={index}>{item}</p>
+            <div key={index}>
+              {item?.toLowerCase() == "search" &&
+                <IoSearch size={24} />
+              }
+              {item?.toLowerCase() == "cart" &&
+                <IoCartOutline size={24} />
+              }
+              {item?.toLowerCase() == "account" &&
+                <p>Sign In</p>
+              }
+            </div>
           )
         })}
       </div>
