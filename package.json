@@ -10,6 +10,7 @@
     "proxy": "local-ssl-proxy --source 3010 --target 3000 --cert localhost.pem --key localhost-key.pem"
   },
   "dependencies": {
+    "@mui/material": "^6.1.1",
     "@shopify/hydrogen-react": "^2024.7.3",
     "@storyblok/react": "^3.0.14",
     "next": "14.2.11",
