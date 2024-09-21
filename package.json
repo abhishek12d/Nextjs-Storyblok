@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@mui/material": "^6.1.1",
     "@shopify/hydrogen-react": "^2024.7.3",
     "@storyblok/react": "^3.0.14",
