@@ -27,7 +27,7 @@ export default async function RootLayout({ children }) {
   return (
     <StoryblokProvider>
       <html lang="en">
-        <body>
+        <body className="2xl:mx-auto max-w-screen-2xl">
           {navbarStory[0] && <Navbar data={navbarStory[0]?.content?.body[0]} />}
           {children}
         </body>

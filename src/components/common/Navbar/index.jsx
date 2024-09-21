@@ -34,7 +34,7 @@ const Navbar = ({ data }) => {
   }
 
   return (
-    <header className='w-full flex items-center sticky top-0 shadow-md sm:px-7 px-3 sm:gap-8 gap-4'>
+    <header className='w-full flex items-center sticky top-0 shadow-md sm:px-7 px-3 sm:gap-8 gap-4 z-10 bg-white'>
       <div className='sm:hidden flex'>
         <div className='cursor-pointer' onClick={toggleDrawer(true)}>
           <CgMenuLeft size={25} />
