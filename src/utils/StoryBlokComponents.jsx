@@ -1,7 +1,5 @@
-import WithStoryblok from "@/components/helpers/withStoryblok";
-
-import Page from "../components/Page";
+import Navbar from "@/components/common/Navbar";
 
 export const StoryBlokComponents = {
-    page: WithStoryblok(Page),
+    primaryHeader: Navbar,
 }

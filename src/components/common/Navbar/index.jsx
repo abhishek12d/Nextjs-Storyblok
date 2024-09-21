@@ -1,27 +1,15 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+
 import Link from 'next/link';
 import Image from 'next/image';
 
 import { IoIosArrowDown } from "react-icons/io";
 import { IoSearch, IoCartOutline } from "react-icons/io5";
 
-import storyblokApi from '@/model/storyBlokApi';
-import WithStoryblok from '@/components/helpers/withStoryblok';
-
-const Navbar = () => {
+const Navbar = ({ data }) => {
   const [dropdown, setDropdown] = useState(null);
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const navbar = await storyblokApi("config");
-      setData(navbar.story.content.header_menu[0]);
-    };
-
-    fetchData();
-  }, []);
 
   const handleMouseEnter = (index) => {
     setDropdown(index);
@@ -30,10 +18,6 @@ const Navbar = () => {
   const handleMouseLeave = () => {
     setDropdown(null);
   };
-
-  if (!data) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <header className='w-full flex items-center sticky top-0 shadow-md px-7 gap-10'>
@@ -94,4 +78,4 @@ const Navbar = () => {
   )
 }
 
-export default WithStoryblok(Navbar);
+export default Navbar;
