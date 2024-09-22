@@ -37,6 +37,7 @@ const Register = () => {
         <div className='w-full sm:py-16 py-5 flex items-center justify-center'>
             <div className='sm:border sm:border-gray-200 border-0 rounded-md p-5 space-y-4 w-96 xl:w-1/3'>
                 <Image src={logo} alt="Logo" width={200} height={200} className='m-auto' />
+                <p className='text-gray-500 tracking-wide text-center'>Sign up to explore exclusive fashion at Parallel Wear</p>
                 <FormikProvider value={formik}>
                     <form className="space-y-4" onSubmit={
                         (e) => {
