@@ -5,8 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { IoIosArrowDown } from "react-icons/io";
-import { IoSearch, IoCartOutline } from "react-icons/io5";
-import { CgMenuLeft } from "react-icons/cg";
+import { IoSearchOutline } from "react-icons/io5";
+import { CgMenuLeft, CgShoppingBag } from "react-icons/cg";
 
 import Drawer from '@mui/material/Drawer';
 
@@ -43,10 +43,10 @@ const Navbar = ({ data }) => {
           <Sidebar data={data} toggleDrawer={toggleDrawer} toggleMobileDropdown={toggleMobileDropdown} sidebarDropdwon={sidebarDropdwon} />
         </Drawer>
       </div>
-      <Link href={data?.logoLink?.url}>
+      <Link href={data?.logoLink?.url || "/"}>
         <Image src={data?.logo?.filename} alt={data?.alt || "logo"} width={150} height={20} priority="low" />
       </Link>
-
+ 
       <div className='sm:flex items-center hidden sm:gap-6 gap-3'>
         {data?.navigationList?.map((navigation, index) => (
           <div
@@ -56,7 +56,7 @@ const Navbar = ({ data }) => {
             onMouseLeave={handleMouseLeave}
           >
             <div className='flex gap-1 items-center'>
-              <Link href={navigation?.link?.url} className='text-gray-700 hover:text-gray-900 whitespace-nowrap'>
+              <Link href={navigation?.link?.url} className=' hover:text-gray-900 whitespace-nowrap'>
                 {navigation?.name}
               </Link>
               <IoIosArrowDown className='group-hover:-rotate-180 duration-300' />
@@ -82,13 +82,16 @@ const Navbar = ({ data }) => {
           return (
             <div key={index}>
               {item?.toLowerCase() == "search" &&
-                <IoSearch className='xs:text-2xl text-xl' />
+                <IoSearchOutline className='xs:text-2xl text-xl' />
               }
               {item?.toLowerCase() == "cart" &&
-                <IoCartOutline className='xs:text-2xl text-xl' />
+                <div className='relative'>
+                  <CgShoppingBag className='xs:text-2xl text-xl' />
+                  <p className='flex items-center justify-center absolute -top-3 -right-3 bg-black text-white rounded-full w-5 xs:w-6 h-5 xs:h-6 text-xs'>0</p>
+                </div>
               }
               {item?.toLowerCase() == "account" &&
-                <p>Sign In</p>
+                <Link href="/auth/login">Sign In</Link>
               }
             </div>
           )

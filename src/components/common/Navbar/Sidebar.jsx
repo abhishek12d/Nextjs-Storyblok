@@ -41,7 +41,7 @@ const Sidebar = ({ data, toggleDrawer, toggleMobileDropdown, sidebarDropdwon }) 
                                         <div className='py-3'>
                                             {navigation.subItems.map((subItem, subIndex) => {
                                                 return (
-                                                    <div key={subIndex} className='flex gap-2 items-center hover:font-semibold rounded-md px-4 py-1.5 text-gray-600'>
+                                                    <div key={subIndex} className='flex gap-2 items-center hover:font-semibold duration-200 rounded-md px-4 py-1.5 text-gray-600'>
                                                         <BsDashLg />
                                                         <Link href={subItem?.link?.url}>
                                                             {subItem?.name}
