@@ -3,12 +3,16 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { signIn } from "next-auth/react";
 
 import * as Yup from 'yup';
 import { Field, FormikProvider, useFormik } from 'formik';
 
 import CustomInput from '@/components/custom/CustomInput';
 import logo from "@/assets/brandLogo.png";
+
+import { createCustomer } from '@/shopify/customer/createCustomer';
 
 const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is required").min(2, "First name should be at least 2 characters").max(10, "First name should not be more than 10 characters"),
@@ -20,6 +24,7 @@ const validationSchema = Yup.object().shape({
 
 const Register = () => {
     const [error, setError] = useState("");
+    const router = useRouter();
 
     const formik = useFormik({
         initialValues: {
@@ -32,6 +37,20 @@ const Register = () => {
         validationSchema,
         onSubmit: (values, formikHelpers) => handleSubmit(values, formikHelpers),
     });
+
+    const handleSubmit = async (values, { resetForm }) => {
+        try {
+            const customer = await createCustomer(values);
+            await signIn('shopify', {
+                email: values.email,
+                password: values.password,
+            });
+            resetForm();
+            router.push("/");
+        } catch (error) {
+            return error;
+        }
+    };
 
     return (
         <div className='w-full sm:py-16 py-5 flex items-center justify-center'>
