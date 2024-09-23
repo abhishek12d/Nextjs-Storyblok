@@ -9,6 +9,6 @@ export const getCookies = () => {
     return Cookies.get("token");
 }
 
-export const removeCookies = () => {
+export const clearCookies = () => {
     return Cookies.remove("token");
 }

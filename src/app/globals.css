@@ -15,3 +15,19 @@ body {
 .error-message {
     @apply text-red-700 text-sm mt-1 font-normal;
 }
+
+.product-card-animation:hover {
+    @apply -translate-y-3;
+}
+
+.heading {
+    @apply text-3xl tracking-wide font-semibold mb-8 text-primary;
+}
+
+.swiper-pagination-bullet {
+    @apply !bg-white;
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+    @apply w-2.5 h-2.5;
+}

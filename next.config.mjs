@@ -4,7 +4,11 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: "a-us.storyblok.com"
-            }
+            },
+            {
+                protocol: 'https',
+                hostname: "cdn.shopify.com"
+            },
         ],
     },
 };
