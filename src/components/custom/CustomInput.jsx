@@ -26,7 +26,7 @@ const CustomInput = ({
       <ErrorMessage
         name={field.name}
         component="div"
-        className="text-red-700 text-sm mt-1 font-normal"
+        className="error-message"
       />
     </div>
   );

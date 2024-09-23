@@ -4,14 +4,12 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { signIn } from "next-auth/react";
 
 import * as Yup from 'yup';
 import { Field, FormikProvider, useFormik } from 'formik';
 
-import CustomInput from '@/components/custom/CustomInput';
 import logo from "@/assets/brandLogo.png";
-
+import CustomInput from '@/components/custom/CustomInput';
 import { createCustomer } from '@/shopify/customer/createCustomer';
 
 const validationSchema = Yup.object().shape({
@@ -40,13 +38,14 @@ const Register = () => {
 
     const handleSubmit = async (values, { resetForm }) => {
         try {
-            const customer = await createCustomer(values);
-            await signIn('shopify', {
-                email: values.email,
-                password: values.password,
-            });
-            resetForm();
-            router.push("/");
+            const data = await createCustomer(values);
+            const error = data?.error?.split(':')[0].trim();
+            if (error) {
+                setError(error);
+            } else {
+                resetForm();
+                router.push("/auth/login");
+            }
         } catch (error) {
             return error;
         }
@@ -54,7 +53,7 @@ const Register = () => {
 
     return (
         <div className='w-full sm:py-16 py-5 flex items-center justify-center'>
-            <div className='sm:border sm:border-gray-200 border-0 rounded-md p-5 space-y-4 w-96 xl:w-1/3'>
+            <div className='sm:border sm:border-gray-200 border-0 rounded-md p-5 space-y-4 w-96 lg:w-1/3 2xl:w-1/4'>
                 <Image src={logo} alt="Logo" width={200} height={200} className='m-auto' />
                 <p className='text-gray-500 tracking-wide text-center'>Sign up to explore exclusive fashion at Parallel Wear</p>
                 <FormikProvider value={formik}>
@@ -100,7 +99,7 @@ const Register = () => {
                             onFocus={() => setError("")}
                         />
                         {error && (
-                            <div className="text-red-700 text-sm sm:text-base mt-1 font-normal">
+                            <div className="error-message">
                                 {error}
                             </div>
                         )}

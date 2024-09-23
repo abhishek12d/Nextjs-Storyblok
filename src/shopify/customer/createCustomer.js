@@ -1,58 +1,44 @@
-import { getPublicTokenHeaders, getStorefrontApiUrl } from "../shopify-client";
+import { graphqlRequest } from "@/utils/shopify/shopify";
+
+const CUSTOMER_CREATE_MUTATION = `
+  mutation createCustomer($input: CustomerCreateInput!) {
+    customerCreate(input: $input) {
+      customer {
+        id
+        firstName
+        lastName
+        displayName
+        email
+        phone
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
 
 export const createCustomer = async ({ email, password, firstName, lastName, phone }) => {
   let customer = null;
 
   try {
-    const res = await fetch(getStorefrontApiUrl(), {
-      headers: getPublicTokenHeaders(),
-      method: 'POST',
-      cache: 'no-store',
-      body: JSON.stringify({
-        variables: {
-          input: {
-            email: email,
-            password: password,
-            firstName: firstName,
-            lastName: lastName,
-            phone: `+91${phone}`,
-          },
-        },
-        query: `
-            mutation createCustomer($input: CustomerCreateInput!) {
-              customerCreate(input: $input) {
-                customer {
-                  id
-                  firstName
-                  lastName
-                  displayName
-                  email
-                  phone
-                }
-                customerUserErrors {
-                  code
-                  field
-                  message
-                }
-              }
-            }
-          `,
-      }),
+    const data = await graphqlRequest(CUSTOMER_CREATE_MUTATION, {
+      input: { email, password, firstName, lastName, phone: `+91${phone}` },
     });
 
-    const data = await res.json();
-    if (data?.errors?.length) {
-      return {
-        error: data.errors[0].message
-      }
-    }
+    const userErrors = data?.data?.customerCreate?.customerUserErrors;
 
-    customer = { ...data.data.customerCreate.customer };
-    return customer;
-  } catch (error) {
-    console.warn(error);
-    return {
-      error: error
+    if (data.error) {
+      return { error: data.error }
+    } else if (userErrors?.length) {
+      return { error: userErrors[0].message };
+    } else {
+      customer = { ...data?.data?.customerCreate.customer };
+      return customer;
     }
+  } catch (error) {
+    return { error }
   }
 };

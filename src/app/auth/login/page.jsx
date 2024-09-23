@@ -3,12 +3,15 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import * as Yup from 'yup';
 import { Field, FormikProvider, useFormik } from 'formik';
 
-import CustomInput from '@/components/custom/CustomInput';
 import logo from "@/assets/brandLogo.png";
+import CustomInput from '@/components/custom/CustomInput';
+import { createCustomerAccessToken } from '@/shopify/customer/createCustomerAccessToken';
+import { setCookies } from '@/utils/cookies/cookie';
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required").email("Please Enter valid email"),
@@ -17,6 +20,7 @@ const validationSchema = Yup.object().shape({
 
 const Login = () => {
     const [error, setError] = useState("");
+    const router = useRouter();
 
     const formik = useFormik({
         initialValues: {
@@ -27,9 +31,25 @@ const Login = () => {
         onSubmit: (values, formikHelpers) => handleSubmit(values, formikHelpers),
     });
 
+    const handleSubmit = async (values, { resetForm }) => {
+        try {
+            const data = await createCustomerAccessToken(values);
+            const error = data?.error?.split(':')[0].trim();
+            if (error) {
+                setError(error);
+            } else {
+                resetForm();
+                setCookies(data?.accessToken, data?.expiresAt);
+                router.push("/");
+            }
+        } catch (error) {
+            return error;
+        }
+    };
+
     return (
         <div className='w-full sm:py-16 py-5 flex items-center justify-center'>
-            <div className='sm:border sm:border-gray-200 border-0 rounded-md p-5 space-y-4 w-96 xl:w-1/3'>
+            <div className='sm:border sm:border-gray-200 border-0 rounded-md p-5 space-y-4 w-96 lg:w-1/3 2xl:w-1/4'>
                 <Image src={logo} alt="Logo" width={200} height={200} className='m-auto' />
                 <p className='text-gray-500 tracking-wide text-center'>Login with your email & password</p>
                 <FormikProvider value={formik}>
@@ -57,7 +77,7 @@ const Login = () => {
                             <Link href="/auth/forget-password" className='hover:underline font-semibold'>Forget password?</Link>
                         </div>
                         {error && (
-                            <div className="text-red-700 text-sm sm:text-base mt-1 font-normal">
+                            <div className="error-message">
                                 {error}
                             </div>
                         )}

@@ -14,7 +14,7 @@ const Hero = ({ blok }) => {
                             : 'mx-auto col-span-full sm:col-span-5';
                 return (
                     <Link href={hero.link.url || "/"} key={hero._uid} className={colSpanClass}>
-                        <Image src={hero?.media?.filename} width={1000} height={1000} alt={hero?.media?.alt || `hero-${i + 1}`} className='h-full w-full' />
+                        <Image src={hero?.media?.filename} width={1000} height={1000} alt={hero?.media?.alt || `hero-${i + 1}`} className='w-screen h-full' />
                     </Link>
                 )
             })}

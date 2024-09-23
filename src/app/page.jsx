@@ -1,4 +1,4 @@
-import storyblokApi from "@/model/storyBlokApi";
+import storyblokApi from "@/utils/storyblok/storyBlokApi";
 import { StoryblokComponent } from "@storyblok/react";
 
 export default async function Page() {

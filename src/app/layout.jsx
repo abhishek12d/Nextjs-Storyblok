@@ -3,8 +3,8 @@ import { storyblokInit, apiPlugin } from "@storyblok/react/rsc";
 import StoryblokProvider from "@/components/context/StoryblokProvider";
 import Navbar from "@/components/common/Navbar";
 
-import { StoryBlokComponents } from "@/utils/StoryBlokComponents";
-import storyblokApi from "@/model/storyBlokApi";
+import { StoryBlokComponents } from "@/utils/storyblok/StoryBlokComponents";
+import storyblokApi from "@/utils/storyblok/storyBlokApi";
 
 import "./globals.css";
 
@@ -27,7 +27,7 @@ export default async function RootLayout({ children }) {
   return (
     <StoryblokProvider>
       <html lang="en">
-        <body className="2xl:mx-auto max-w-screen-2xl">
+        <body>
           {navbarStory[0] && <Navbar data={navbarStory[0]?.content?.body[0]} />}
           {children}
         </body>

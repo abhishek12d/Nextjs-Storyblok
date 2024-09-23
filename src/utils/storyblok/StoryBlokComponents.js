@@ -1,4 +1,4 @@
-import Hero from "@/views/hero";
+import Hero from "@/views/Hero";
 
 export const StoryBlokComponents = {
     "Hero Section": Hero
