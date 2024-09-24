@@ -14,12 +14,12 @@ const HeroSlider = ({ blok }) => {
             <Swiper
                 modules={[Autoplay, Pagination]}
                 spaceBetween={30}
-                slidesPerView={1.4}
-                centeredSlides={true}
+                slidesPerView={1}
                 pagination={{
                     clickable: true,
                 }}
                 loop={true}
+                autoplay={true}
             >
                 {blok?.HeroSlider?.map((hero, i) => (
                     <SwiperSlide key={hero._uid}>
@@ -29,7 +29,7 @@ const HeroSlider = ({ blok }) => {
                                 width={1000}
                                 height={500}
                                 alt={hero?.media?.alt || `hero-${i + 1}`}
-                                className="object-contain h-full w-full rounded-md"
+                                className="h-full w-full rounded-md"
                             />
                         </Link>
                     </SwiperSlide>

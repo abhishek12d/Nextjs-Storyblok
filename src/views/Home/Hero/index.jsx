@@ -8,8 +8,8 @@ const Hero = ({ blok }) => {
             {blok?.hero?.map((hero, i) => {
                 const colSpanClass =
                     i >= 1 && i <= blok.hero.length - 2
-                        ? 'mx-auto col-span-1 sm:col-span-2'
-                        : 'mx-auto col-span-full sm:col-span-5';
+                        ? 'mx-auto col-span-1 sm:col-span-2 shining'
+                        : 'mx-auto col-span-full sm:col-span-5 shining';
                 return (
                     <Link href={hero.link.url || "/"} key={hero._uid} className={colSpanClass}>
                         <Image src={hero?.media?.filename} width={1000} height={1000} alt={hero?.media?.alt || `hero-${i + 1}`} className='w-screen h-full' />
