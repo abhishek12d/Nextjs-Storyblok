@@ -13,7 +13,9 @@ const ProductCard = ({ data }) => {
                 <p className='text-secondary text-xs lg:text-sm leading-normal xl:leading-relaxed truncate'>{data?.description}</p>
                 <div className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5 text-primary">
                     <span className="inline-block">${data?.priceRange?.minVariantPrice?.amount}</span>
-                    <del className="sm:text-base font-normal text-secondary">${data?.compareAtPriceRange?.minVariantPrice?.amount}</del>
+                    {data?.compareAtPriceRange?.minVariantPrice?.amount > 0 &&
+                        <del className="sm:text-base font-normal text-secondary">${data?.compareAtPriceRange?.minVariantPrice?.amount}</del>
+                    }
                 </div>
             </div>
         </Link>

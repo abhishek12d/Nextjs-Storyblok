@@ -15,6 +15,7 @@
     "@mui/material": "^6.1.1",
     "@shopify/hydrogen-react": "^2024.7.3",
     "@storyblok/react": "^3.0.14",
+    "classnames": "^2.5.1",
     "formik": "^2.4.6",
     "graphql-request": "^7.1.0",
     "js-cookie": "^3.0.5",
