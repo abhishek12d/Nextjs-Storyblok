@@ -1,12 +1,12 @@
-import Image from 'next/image'
+import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react'
 
 const ProductCard = ({ data }) => {
     return (
         <Link href={`/products/${data.handle}`} className='bg-white hover:shadow-xl rounded-md duration-500 group product-card-animation'>
             <div>
-                <Image src={data?.featuredImage?.url} alt={data?.featuredImage?.altText} width={400} height={400} className='w-[400px] xs:h-[200px] sm:h-[250px] lg:h-[300px] object-cover rounded-md group-hover:rounded-br-none group-hover:rounded-bl-none' />
+                <Image src={data?.featuredImage?.url} alt={data?.featuredImage?.altText} width={400} height={400} className='w-[400px] xs:h-[200px] sm:h-[220px] 2xl:h-[250px] 3xl:h-[280px] object-cover rounded-md group-hover:rounded-br-none group-hover:rounded-bl-none' />
             </div>
             <div className='p-4'>
                 <h2 className='truncate mb-1 text-sm md:text-base font-semibold text-primary'>{data?.title}</h2>

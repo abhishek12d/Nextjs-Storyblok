@@ -10,7 +10,7 @@ const FeaturedProducts = async () => {
     return (
         <Fragment>
             <h2 className='heading'>New Arrivals</h2>
-            <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:gap-x-6 gap-x-4 gap-y-8'>
+            <div className='grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6'>
                 {products?.map((product) => {
                     return <ProductCard data={product} key={product.id} />
                 })}

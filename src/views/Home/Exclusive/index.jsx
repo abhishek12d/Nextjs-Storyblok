@@ -13,17 +13,17 @@ const Exclusive = ({ blok }) => {
                 );
 
                 const contentClass = cn(
-                    'sm:block hidden absolute uppercase text-sm md:text-lg lg:text-xl tracking-wider opacity-10 top-8',
+                    'sm:block hidden absolute uppercase text-sm md:text-lg lg:text-xl xl:text-2xl tracking-wider opacity-10 top-8',
                     { 'right-5': i === 0, 'left-5': i !== 0 }
                 );
 
                 const yearClass = cn(
-                    'sm:block hidden absolute uppercase text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-wider opacity-[0.03] top-16',
+                    'sm:block hidden absolute uppercase text-6xl md:text-7xl lg:text-9xl xl:text-[10rem] font-bold tracking-wider opacity-[0.03] top-16',
                     { 'right-5': i === 0, 'left-5': i !== 0 }
                 );
 
                 const buttonClass = cn(
-                    'bg-white hover:bg-black hover:text-white sm"text-base text-xs duration-200 sm:py-3 py-2.5 sm:px-7 px-5 rounded-md absolute bottom-4 shadow-lg',
+                    'bg-white hover:bg-black hover:text-white sm:text-base text-xs duration-200 sm:py-3 py-2.5 sm:px-7 px-5 rounded-md absolute bottom-4 shadow-lg',
                     { 'right-5': i === 0, 'left-5': i !== 0 }
                 );
 

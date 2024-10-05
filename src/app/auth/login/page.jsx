@@ -85,7 +85,7 @@ const Login = () => {
                             <button
                                 type="submit"
                                 disabled={formik.isSubmitting}
-                                className='w-full px-7 py-2 rounded-md text-center bg-black text-white p-4 font-semibold'
+                                className='btn'
                             >
                                 Login
                             </button>
