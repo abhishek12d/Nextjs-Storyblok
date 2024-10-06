@@ -9,6 +9,31 @@ const PRODUCT_QUERY = `
             title
             handle
             description
+            variants(first: 100) {
+                edges {
+                    node {
+                        id
+                        title
+                        quantityAvailable
+                        selectedOptions{
+                            name
+                            value
+                        }
+                        price{
+                            amount
+                            currencyCode
+                        }
+                        compareAtPrice{
+                            amount
+                            currencyCode
+                        }
+                        image {
+                            url
+                            altText
+                        }
+                    }
+                }
+            }
             featuredImage {
                 url
                 altText
