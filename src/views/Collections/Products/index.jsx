@@ -17,27 +17,30 @@ const Products = ({ products }) => {
 
     const filteredProducts = useMemo(() => {
         return products.filter((product) => {
-            return Object.keys(filters).every((filterKey) => {
-                const filterValue = filters[filterKey].toLowerCase();
-
-                if (filterKey === "title") {
-                    return product.title.toLowerCase().includes(filterValue);
-                }
-
+            return Object.entries(filters).every(([filterKey, filterValue]) => {
+                filterValue = filterValue.toLowerCase();
                 if (filterKey === "price") {
                     const productPrice = parseFloat(product.priceRange.minVariantPrice.amount);
-                    if (filterValue === "under $50") {
-                        return productPrice < 50;
-                    }
-                    return productPrice >= 50;
+
+                    const priceRanges = filterValue
+                        .split(",")
+                        .map(range => range.split("to")
+                            .map(item => parseFloat(item.trim().replace("$", "").replace("under ", "")))
+                        );
+
+                    return priceRanges.some(([minPrice, maxPrice]) => {
+                        if (isNaN(maxPrice)) {
+                            return productPrice < minPrice;
+                        }
+                        return productPrice >= minPrice && productPrice <= maxPrice;
+                    });
                 }
 
                 if (filterKey === "size" || filterKey === "color") {
                     return product.variants.edges.some((variant) =>
-                        variant.node.selectedOptions.some((option) => {
-                            return option.name.toLowerCase() === filterKey &&
-                                option.value.toLowerCase() === filterValue;
-                        })
+                        variant.node.selectedOptions.some((option) =>
+                            option.name.toLowerCase() === filterKey && option.value.toLowerCase() === filterValue
+                        )
                     );
                 }
 

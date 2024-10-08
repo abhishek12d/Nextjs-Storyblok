@@ -31,10 +31,12 @@ const Collections = async () => {
                 }
 
                 variant.node.selectedOptions.forEach(option => {
-                    if (!filters[option.name]) {
-                        filters[option.name] = new Set();
+                    if (option.name.toLowerCase() === "color" || option.name.toLowerCase() === "size") {
+                        if (!filters[option.name]) {
+                            filters[option.name] = new Set();
+                        }
+                        filters[option.name].add(option.value);
                     }
-                    filters[option.name].add(option.value);
                 });
             });
         });

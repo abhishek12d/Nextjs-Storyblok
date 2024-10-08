@@ -12,7 +12,7 @@ const OnSellingProducts = async () => {
         <Fragment>
             <div className='flex justify-between items-center'>
                 <h2 className='heading'>On Selling Products</h2>
-                <Link href="/" className='hover:underline'>See All product</Link>
+                <Link href="/collections/all" className='hover:underline'>See All product</Link>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 sm:gap-x-6 gap-x-4 gap-y-8'>
                 {products?.map((product) => {
