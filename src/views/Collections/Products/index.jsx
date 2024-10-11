@@ -1,15 +1,21 @@
 "use client";
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import ProductCard from '@/components/ecommerce/ProductCard';
 
-const sortingOptions =
-    ["Sorting Options", "Price: low to high", "Price: high to low", "Title: A to Z", "Title: Z to A"];
+const sortingOptions = [
+    { key: "default", label: "Sorting Options" },
+    { key: "priceLowToHigh", label: "Price: low to high" },
+    { key: "priceHighToLow", label: "Price: high to low" },
+    { key: "titleAToZ", label: "Title: A to Z" },
+    { key: "titleZToA", label: "Title: Z to A" }
+];
 
 const Products = ({ products }) => {
     const [sortDropdown, setSortDropdown] = useState(false);
+    const [sortedProducts, setSortedProducts] = useState(products);
 
     const searchParams = useSearchParams();
 
@@ -55,6 +61,35 @@ const Products = ({ products }) => {
         });
     }, [filters, products]);
 
+    const handleSort = async (selectedValue) => {
+        setSortDropdown(!sortDropdown);
+
+        const sortedData = [...filteredProducts]
+
+        switch (selectedValue) {
+            case "priceLowToHigh":
+                sortedData.sort((a, b) => parseFloat(a.priceRange.minVariantPrice.amount) - parseFloat(b.priceRange.minVariantPrice.amount));
+                break;
+            case "priceHighToLow":
+                sortedData.sort((a, b) => parseFloat(b.priceRange.minVariantPrice.amount) - parseFloat(a.priceRange.minVariantPrice.amount));
+                break;
+            case "titleAToZ":
+                sortedData.sort((a, b) => a.title.localeCompare(b.title));
+                break;
+            case "titleZToA":
+                sortedData.sort((a, b) => b.title.localeCompare(a.title));
+                break;
+            default:
+                break;
+        }
+
+        setSortedProducts(sortedData);
+    };
+
+    useEffect(() => {
+        setSortedProducts(filteredProducts);
+    }, [filteredProducts]);
+
     return (
         <div className='w-full space-y-8'>
             <div className='w-full flex items-center justify-between'>
@@ -74,8 +109,8 @@ const Products = ({ products }) => {
                             <ul className='absolute bg-white w-full z-10 p-3 rounded-md'>
                                 {sortingOptions?.map((option) => {
                                     return (
-                                        <li key={option}>
-                                            <button onClick={() => setSortDropdown(!sortDropdown)} className='text-sm block text-left text-secondary hover:text-primary hover:bg-gray-50 p-2 rounded-md w-full'>{option}</button>
+                                        <li key={option.key}>
+                                            <button onClick={() => handleSort(option.key)} className='text-sm block text-left text-secondary hover:text-primary hover:bg-gray-50 p-2 rounded-md w-full'>{option.label}</button>
                                         </li>
                                     )
                                 })}
@@ -85,7 +120,7 @@ const Products = ({ products }) => {
                 </div>
             </div>
             <div className='grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 gap-6'>
-                {filteredProducts?.map((product) => (
+                {sortedProducts?.map((product) => (
                     <ProductCard data={product} key={product.id} />
                 ))}
             </div>
