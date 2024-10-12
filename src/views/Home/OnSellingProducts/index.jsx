@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react'
 
 import HorizontalProductCard from '@/components/ecommerce/HorizontalProductCard';
-import { fetchProducts } from '@/shopify/products/fetchProducts'
+import { fetchCollections } from '@/shopify/collections/fetchCollections'
 import Link from 'next/link';
 
 const OnSellingProducts = async () => {
 
-    const { products } = await fetchProducts({ limit: 9 });
+    const { products } = await fetchCollections({ limit: 9 });
 
     return (
         <Fragment>

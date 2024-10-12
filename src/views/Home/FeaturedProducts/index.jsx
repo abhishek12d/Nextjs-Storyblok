@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react'
 
 import ProductCard from '@/components/ecommerce/ProductCard';
-import { fetchProducts } from '@/shopify/products/fetchProducts'
+import { fetchCollections } from '@/shopify/collections/fetchCollections'
 
 const FeaturedProducts = async () => {
 
-    const { products } = await fetchProducts({ limit: 10 });
+    const { products } = await fetchCollections({ limit: 10 });
 
     return (
         <Fragment>

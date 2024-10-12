@@ -21,6 +21,19 @@ const Filter = ({ data }) => {
         const queryParams = new URLSearchParams(searchParams);
         const filterKey = data.name.toLowerCase();
 
+        const encodedFilters = queryParams.get(filterKey);
+
+        const decodedFilters = encodedFilters
+            ? encodedFilters.split(',').map(filter => decodeURIComponent(filter.replace(/\+/g, ' ')))
+            : [];
+
+        setSelectedFilters(decodedFilters);
+    }, [searchParams]);
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(searchParams);
+        const filterKey = data.name.toLowerCase();
+
         if (selectedFilters.length > 0) {
             queryParams.set(filterKey, selectedFilters.join(','));
         } else {

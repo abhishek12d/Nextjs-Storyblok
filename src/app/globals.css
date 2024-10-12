@@ -31,11 +31,11 @@
     }
 
     .heading {
-        @apply text-2xl sm:text-3xl tracking-wide font-semibold text-primary;
+        @apply text-xl sm:text-2xl tracking-wide font-semibold text-primary;
     }
 
     .subheading {
-        @apply text-xl sm:text-2xl tracking-wide font-semibold text-primary;
+        @apply text-lg sm:text-xl tracking-wide font-semibold text-primary;
     }
 }
 

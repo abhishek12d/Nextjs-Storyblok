@@ -16,6 +16,7 @@ const sortingOptions = [
 const Products = ({ products }) => {
     const [sortDropdown, setSortDropdown] = useState(false);
     const [sortedProducts, setSortedProducts] = useState(products);
+    const [selectedSort, setSelectedSort] = useState("Sorting Options");
 
     const searchParams = useSearchParams();
 
@@ -63,10 +64,11 @@ const Products = ({ products }) => {
 
     const handleSort = async (selectedValue) => {
         setSortDropdown(!sortDropdown);
+        setSelectedSort(selectedValue.label);
 
         const sortedData = [...filteredProducts]
 
-        switch (selectedValue) {
+        switch (selectedValue.key) {
             case "priceLowToHigh":
                 sortedData.sort((a, b) => parseFloat(a.priceRange.minVariantPrice.amount) - parseFloat(b.priceRange.minVariantPrice.amount));
                 break;
@@ -96,12 +98,12 @@ const Products = ({ products }) => {
                 <h2 className='subheading'>Casual Wear</h2>
                 <div className='flex gap-10 items-center'>
                     <h3 className='text-secondary font-normal text-sm'>{filteredProducts?.length} items</h3>
-                    <div class="relative z-10 min-w-[180px]">
-                        <button class="border border-gray-300 text-[13px] font-semibold relative w-full py-2 px-3 bg-white rounded-lg focus:outline-none sm:text-sm cursor-pointer" id="sort" type="button" aria-haspopup="listbox" aria-expanded="false" onClick={() => setSortDropdown(!sortDropdown)}>
-                            <span class="block truncate text-start">Sorting Options</span>
-                            <span class="absolute inset-y-0 right-2 flex items-center">
-                                <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="w-5 h-5 text-gray-400" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">4
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
+                    <div className="relative z-10 min-w-[180px]">
+                        <button className="border border-gray-300 text-[13px] font-semibold relative w-full py-2 px-3 bg-white rounded-lg focus:outline-none sm:text-sm cursor-pointer" id="sort" type="button" aria-haspopup="listbox" aria-expanded="false" onClick={() => setSortDropdown(!sortDropdown)}>
+                            <span className="block truncate text-start">{selectedSort}</span>
+                            <span className="absolute inset-y-0 right-2 flex items-center">
+                                <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true" className="w-5 h-5 text-gray-400" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">4
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
                                 </svg>
                             </span>
                         </button>
@@ -110,7 +112,7 @@ const Products = ({ products }) => {
                                 {sortingOptions?.map((option) => {
                                     return (
                                         <li key={option.key}>
-                                            <button onClick={() => handleSort(option.key)} className='text-sm block text-left text-secondary hover:text-primary hover:bg-gray-50 p-2 rounded-md w-full'>{option.label}</button>
+                                            <button onClick={() => handleSort(option)} className='text-sm block text-left text-secondary hover:text-primary hover:bg-gray-50 p-2 rounded-md w-full'>{option.label}</button>
                                         </li>
                                     )
                                 })}

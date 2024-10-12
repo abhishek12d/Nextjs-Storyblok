@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 
 import Filters from '@/views/Collections/Filters'
 import Products from '@/views/Collections/Products'
-import { fetchProducts } from '@/shopify/products/fetchProducts';
+import { fetchCollections } from '@/shopify/collections/fetchCollections';
 
 const Collections = async () => {
 
@@ -56,7 +56,7 @@ const Collections = async () => {
         ];
     };
 
-    const { products } = await fetchProducts({ limit: 100 });
+    const { products } = await fetchCollections({ limit: 100 });
     const filters = organizeFilters(products);
 
     return (

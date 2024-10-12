@@ -13,7 +13,7 @@ import Drawer from '@mui/material/Drawer';
 
 import Sidebar from './Sidebar';
 import { clearCookies, getCookies } from '@/utils/cookies/cookie';
-import { fetchProducts } from '@/shopify/products/fetchProducts';
+import { fetchCollections } from '@/shopify/collections/fetchCollections';
 
 const Navbar = ({ data }) => {
   const [dropdown, setDropdown] = useState(null);
@@ -49,7 +49,7 @@ const Navbar = ({ data }) => {
   useEffect(() => {
     const token = getCookies();
     setToken(token);
-    fetchProducts();
+    fetchCollections();
   }, []);
 
   return (
