@@ -72,3 +72,12 @@
         transition: left 1s ease;
     }
 }
+
+.swiper-button-prev,
+.swiper-button-next {
+    @apply !text-primary;
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+    @apply !bg-primary !text-primary;
+}

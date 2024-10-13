@@ -10,7 +10,7 @@ const Product = async ({ params }) => {
     const product = await fetchProduct({ handle: params.handle });
 
     return (
-        <div className='flex justify-center lg:flex-nowrap flex-wrap gap-10 sm:m-10 m-4'>
+        <div className='grid lg:grid-cols-2 grid-cols-1 justify-items-center gap-10 sm:m-10 m-4'>
             <Suspense fallback={"Loading..."}>
                 <ProductImageGallery product={product} />
                 <ProductDetails product={product} />
@@ -19,7 +19,7 @@ const Product = async ({ params }) => {
     )
 }
 
-export default Product
+export default Product;
 
 export async function generateMetadata({ params }) {
     const product = await fetchProduct({ handle: params.handle });

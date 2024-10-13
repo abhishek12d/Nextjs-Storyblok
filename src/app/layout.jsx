@@ -1,10 +1,12 @@
 import { storyblokInit, apiPlugin } from "@storyblok/react/rsc";
 
-import StoryblokProvider from "@/components/context/StoryblokProvider";
 import Navbar from "@/components/common/Navbar";
 
 import { StoryBlokComponents } from "@/utils/storyblok/StoryBlokComponents";
 import storyblokApi from "@/utils/storyblok/storyBlokApi";
+
+import StoreProvider from "@/components/context/StoreProvider";
+import StoryblokProvider from "@/components/context/StoryblokProvider";
 
 import "./globals.css";
 
@@ -26,12 +28,14 @@ export default async function RootLayout({ children }) {
   const navbarStory = await storyblokApi('templates/global-templates/header');
   return (
     <StoryblokProvider>
-      <html lang="en">
-        <body>
-          {navbarStory[0] && <Navbar data={navbarStory[0]?.content?.body[0]} />}
-          {children}
-        </body>
-      </html>
+      <StoreProvider>
+        <html lang="en">
+          <body>
+            {navbarStory[0] && <Navbar data={navbarStory[0]?.content?.body[0]} />}
+            {children}
+          </body>
+        </html>
+      </StoreProvider>
     </StoryblokProvider>
   );
 }
