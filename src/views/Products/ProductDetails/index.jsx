@@ -1,39 +1,65 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FiMinus, FiPlus } from "react-icons/fi";
-import { useDispatch } from 'react-redux';
 import cn from 'classnames';
-
-import { setSelectedColor, setSelectedSize } from '@/store/product/productSlice';
 
 const ProductDetails = ({ product }) => {
     const [color, setColor] = useState("");
     const [size, setSize] = useState("");
-    const dispatch = useDispatch();
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
-    const { title, description, priceRange, compareAtPriceRange, vendor, tags, options } = product;
+    const { title, description, priceRange, compareAtPriceRange, vendor, tags, options, variants } = product;
+
+    const updateQuery = useCallback((updatedColor, updatedSize) => {
+        const params = new URLSearchParams(window.location.search);
+
+        if (updatedColor) {
+            params.set('color', updatedColor);
+        } else {
+            params.delete('color');
+        }
+
+        if (updatedSize) {
+            params.set('size', updatedSize);
+        } else {
+            params.delete('size');
+        }
+
+        router.replace(`?${params.toString()}`, undefined, { shallow: true });
+    }, []);
 
     useEffect(() => {
-        options?.forEach((option) => {
-            const defaultValue = option.values[0];
-            if (option.name === 'Color') {
-                setColor(defaultValue);
-                dispatch(setSelectedColor(defaultValue));
-            } else if (option.name === 'Size') {
-                setSize(defaultValue);
-                dispatch(setSelectedSize(defaultValue));
+        if (options) {
+            const initialColor = options.find(option => option.name === 'Color')?.values[0];
+            const initialSize = options.find(option => option.name === 'Size')?.values[0];
+
+            const urlColor = searchParams.get('color');
+            const urlSize = searchParams.get('size');
+
+            if (initialColor && urlColor && color !== urlColor) {
+                setColor(urlColor);
             }
-        });
-    }, [options, dispatch]);
+
+            if (initialSize && urlSize && size !== urlSize) {
+                setSize(urlSize);
+            }
+        }
+    }, [options]);
+
+    useEffect(() => {
+        if (color && size) {
+            updateQuery(color, size);
+        }
+    }, [color, size, updateQuery]);
 
     const handleCheckboxChange = (option, value) => {
         if (option.name === 'Color') {
             setColor(value);
-            dispatch(setSelectedColor(value));
         } else if (option.name === 'Size') {
             setSize(value);
-            dispatch(setSelectedSize(value));
         }
     };
 
@@ -53,50 +79,86 @@ const ProductDetails = ({ product }) => {
             <hr />
 
             <div className='space-y-6'>
-                {options?.map((option) => (
-                    <div key={option.id} className="mb-4">
-                        <h3 className="text-lg font-medium">{option.name}</h3>
-                        <div className="flex gap-3 mt-2">
-                            {option.values.map((value) => {
-                                const isSelected = option.name === 'Color'
-                                    ? color === value
-                                    : size === value;
+                {options?.map((option) => {
+                    let isAvailable = [];
+                    variants?.edges?.forEach((val) => {
+                        let title = val?.node?.title?.split(" / ");
+                        isAvailable.push({ title, available: val?.node?.availableForSale });
+                    });
 
-                                return (
-                                    <label
-                                        key={value}
-                                        className={cn(
-                                            "border uppercase duration-200 rounded-md p-1 sm:w-10 sm:h-10 w-8 h-8 text-xs sm:text-sm text-center cursor-pointer",
-                                            {
-                                                "border-primary": isSelected,
-                                                "hover:border-primary": !isSelected,
-                                                "border-gray-300": !isSelected
-                                            }
-                                        )}
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            name={option.name}
-                                            value={value}
-                                            className="hidden"
-                                            checked={isSelected}
-                                            onChange={() => handleCheckboxChange(option, value)}
-                                            aria-label={`${option.name} ${value}`}
-                                        />
-                                        <span
-                                            style={option.name === 'Color' ? { backgroundColor: value } : {}}
-                                            className={cn('rounded w-full h-full flex items-center justify-center', {
-                                                'block': option.name === 'Color',
-                                            })}
+                    return (
+                        <div key={option.id} className="mb-4">
+                            <h3 className="font-medium">{option.name}</h3>
+                            <div className="flex gap-3 mt-2">
+                                {option.values.map((value) => {
+                                    const isSelected = option.name === 'Color' ? color === value : size === value;
+
+                                    let availableForThisOption = true;
+
+                                    if (option.name === 'Size') {
+                                        if (color) {
+                                            const matchingVariant = isAvailable.find(
+                                                val => val.title[0] === value && val.title[1] === color
+                                            );
+                                            availableForThisOption = matchingVariant ? matchingVariant.available : true;
+                                        }
+                                    }
+
+                                    else if (option.name === 'Color') {
+                                        if (size) {
+                                            const matchingVariant = isAvailable.find(
+                                                val => val.title[1] === value && val.title[0] === size
+                                            );
+                                            availableForThisOption = matchingVariant ? matchingVariant.available : true;
+                                        }
+                                    }
+
+                                    return (
+                                        <label
+                                            key={value}
+                                            className={cn(
+                                                "border relative uppercase duration-200 rounded-md p-1 sm:w-10 sm:h-10 w-8 h-8 text-xs sm:text-sm text-center cursor-pointer",
+                                                {
+                                                    "border-primary": isSelected,
+                                                    "hover:border-primary": !isSelected && availableForThisOption,
+                                                    "border-gray-300": !isSelected,
+                                                    "line-through": !availableForThisOption && (size || color),
+                                                    "cursor-not-allowed opacity-80": !availableForThisOption && (size || color)
+                                                }
+                                            )}
                                         >
-                                            {option.name === 'Size' ? value : ''}
-                                        </span>
-                                    </label>
-                                );
-                            })}
+                                            <input
+                                                type="checkbox"
+                                                name={option.name}
+                                                value={value}
+                                                className="hidden"
+                                                checked={isSelected}
+                                                onChange={() => handleCheckboxChange(option, value)}
+                                                aria-label={`${option.name} ${value}`}
+                                                disabled={!availableForThisOption && (size || color)}
+                                            />
+                                            <span
+                                                style={option.name === 'Color' ? { backgroundColor: value } : {}}
+                                                className={cn('relative rounded w-full h-full flex items-center justify-center', {
+                                                    'block': option.name === 'Color',
+                                                })}
+                                            >
+                                                {option.name === 'Size' ? value : ''}
+                                            </span>
+                                            {!availableForThisOption && (size || color) && (
+                                                <div className="absolute inset-0 flex items-center justify-center bg-gray-200 bg-opacity-50">
+                                                    <svg className="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </div>
+                                            )}
+                                        </label>
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
             <hr />
 

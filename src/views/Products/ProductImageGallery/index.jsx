@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useRef, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-
-import { useSelector } from "react-redux";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -12,7 +11,10 @@ import "swiper/swiper-bundle.css";
 const ProductImageGallery = ({ product }) => {
     const mainCarouselRef = useRef(null);
     const thumbCarouselRef = useRef(null);
-    const { size, color } = useSelector((state) => state.product);
+
+    const searchParams = useSearchParams();
+    const color = searchParams.get('color');
+    const size = searchParams.get('size');
 
     const filteredImages = useMemo(() => {
         return product?.images?.edges?.filter((image) => {
